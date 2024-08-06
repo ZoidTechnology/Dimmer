@@ -24,6 +24,8 @@ void writeStorage(uint8_t brightness, uint8_t currentLimit) {
 	FLASH->DUKR = 0xAE; // Write hardware key 1
 	FLASH->DUKR = 0x56; // Write hardware key 2 to disable EEPROM write protection
 
+	while (!(FLASH->IAPSR & 0x08)); // Wait for EEPROM write protection to be disabled
+
 	EEPROM[0] = brightness;
 	EEPROM[1] = currentLimit;
 	EEPROM[2] = calculateChecksum(2);
